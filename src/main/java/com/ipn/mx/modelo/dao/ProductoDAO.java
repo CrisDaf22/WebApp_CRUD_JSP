@@ -14,7 +14,19 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class ProductoDAO {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Persistencia");
+    private static ProductoDAO instancia;
+    private final EntityManagerFactory emf;
+
+    public ProductoDAO() {
+        this.emf = Persistence.createEntityManagerFactory("Persistencia");
+    }
+    
+    public static ProductoDAO getInstance() {
+        if (instancia == null) {
+            instancia = new ProductoDAO();
+        }
+        return instancia;
+    }
     
     public void insertarProducto(Producto p) {
         EntityManager manager = emf.createEntityManager();
@@ -143,21 +155,23 @@ public class ProductoDAO {
         */
         
         // LEER TODO
-        /*
+        
         ProductoDAO dao = new ProductoDAO();
         List<Producto> lp = null;
         lp = dao.leerProductos();
         
         System.out.println(lp);
-        */
+        
         
         // ELIMINAR
+        /*
         p.setId(1);
         
         ProductoDAO dao = new ProductoDAO();
         dao.eliminarProducto(p);
         
         System.out.println(dao.leerProductos());
+        */
     }
     
     // Función encargada de convertir los datos de la imágen a byte[]
