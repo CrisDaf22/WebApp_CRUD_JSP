@@ -21,7 +21,7 @@
                 <h1 class="h1">Listado de productos</h1>
             </header>  
           
-          <a href="crear_producto.jsp" class="btn btn-outline-primary">Crear producto</a>
+          <a href="ControladorProductos?accion=crearProducto" class="btn btn-outline-primary">Crear producto</a>
           <table class="table">
               <thead class="thead-class">
                 <th scope="col">ID</th>
