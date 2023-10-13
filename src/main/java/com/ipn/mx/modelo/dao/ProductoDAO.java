@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,13 +156,13 @@ public class ProductoDAO {
         */
         
         // LEER TODO
-        
+        /*
         ProductoDAO dao = new ProductoDAO();
         List<Producto> lp = null;
         lp = dao.leerProductos();
         
         System.out.println(lp);
-        
+        */
         
         // ELIMINAR
         /*
@@ -172,6 +173,14 @@ public class ProductoDAO {
         
         System.out.println(dao.leerProductos());
         */
+        
+        p.setId(3);
+        
+        ProductoDAO dao = new ProductoDAO();
+        Producto p1 = null;
+        p1 = dao.leerProducto(p);
+        
+        System.out.println(java.util.Base64.getEncoder().encodeToString(p1.getImagen()));
     }
     
     // Función encargada de convertir los datos de la imágen a byte[]

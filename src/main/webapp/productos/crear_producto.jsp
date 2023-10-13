@@ -63,7 +63,7 @@
                 <c:if test="${producto.imagen != null}">
                     <div class="mb-3">
                         <label for="txt_imgProducto" class="form-label">Imágen actual</label>
-                        <<img src="data:image/jpeg;base64,${java.util.Base64.getEncoder().encodeToString(producto.imagen)}" id="txt_imgProducto"/>
+                        <img src="data:image/jpeg;base64,${java.util.Base64.getEncoder().encodeToString(producto.imagen)}" id="txt_imgProducto"/>
                     </div>
                 </c:if>
                 

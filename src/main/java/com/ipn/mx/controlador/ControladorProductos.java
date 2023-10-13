@@ -46,10 +46,12 @@ public class ControladorProductos extends HttpServlet {
             crearProducto(request, response);
         } else if (accion.equals("almacenarProducto")) {
             almacenarProducto(request, response);
+        } else if (accion.equals("leerProducto")) {
+            leerProducto(request, response);
         }
     }
     
-    public void listarProductos(HttpServletRequest request, HttpServletResponse response) {
+    private void listarProductos(HttpServletRequest request, HttpServletResponse response) {
         ProductoDAO dao = ProductoDAO.getInstance();
         
         try {
@@ -64,7 +66,7 @@ public class ControladorProductos extends HttpServlet {
         }
     }
     
-    public void crearProducto(HttpServletRequest request, HttpServletResponse response) {
+    private void crearProducto(HttpServletRequest request, HttpServletResponse response) {
         try {
             RequestDispatcher rd = request.getRequestDispatcher("/productos/crear_producto.jsp");
             rd.forward(request, response);
@@ -73,7 +75,7 @@ public class ControladorProductos extends HttpServlet {
         }
     }
     
-    public void almacenarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private void almacenarProducto(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("txt_idProducto"));
         String nombre = request.getParameter("txt_nombreProducto");
         String descripcion = request.getParameter("txt_descripcionProducto");
@@ -108,6 +110,29 @@ public class ControladorProductos extends HttpServlet {
         byte[] datos = baos.toByteArray();
         
         return datos;
+    }
+    
+    private void leerProducto(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idProducto"));
+        
+        ProductoDAO dao = ProductoDAO.getInstance();
+        Producto p = new Producto();
+        Producto pLeido = null;
+        p.setId(id);
+        
+        pLeido = dao.leerProducto(p);
+        
+        try {
+            request.setAttribute("producto", pLeido);
+            
+            String base64 = java.util.Base64.getEncoder().encodeToString(pLeido.getImagen());
+            request.setAttribute("imgProducto", base64);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("/productos/leer_producto.jsp");
+            rd.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(ControladorProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -148,5 +173,7 @@ public class ControladorProductos extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }

@@ -20,41 +20,41 @@
             <header>
                 <h1 class="h1">Listado de productos</h1>
             </header>  
-          
-          <a href="ControladorProductos?accion=crearProducto" class="btn btn-outline-primary">Crear producto</a>
-          <table class="table">
-              <thead class="thead-class">
+
+            <a href="ControladorProductos?accion=crearProducto" class="btn btn-outline-primary">Crear producto</a>
+            <table class="table">
+                <thead class="thead-class">
                 <th scope="col">ID</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Acciones</th>
-              </thead>
-              <tbody>
-              <c:choose>
-                  <c:when test="${productos != null}">
-                      <c:forEach var="producto" items="${productos}">
-                          <tr>
-                              <td><c:out value="${producto.id}" /></td>
-                              <td><c:out value="${producto.nombre}" /></td>
-                              <td>
-                                  <a href="#" class="btn btn-outline-success">Leer</a> &nbsp;
-                                  <a href="#" class="btn btn-outline-warning">Modificar</a> &nbsp;
-                                  <a href="#" class="btn btn-outline-danger">Eliminar</a>
-                              </td>
-                          </tr>
-                      </c:forEach>
-                  </c:when>
-                  <c:otherwise>
-                      <tr>
-                          <td colspan="3">
-                              <div class="alert alert-primary" role="alert">
-                                No hay productos registrados aún.
-                              </div>
-                          </td> 
-                      </tr>
-                  </c:otherwise>
-              </c:choose>
-              </tbody>
-          </table>
+                </thead>
+                <tbody>
+                    <c:choose>
+                        <c:when test="${productos != null}">
+                            <c:forEach var="producto" items="${productos}">
+                                <tr>
+                                    <td><c:out value="${producto.id}" /></td>
+                                    <td><c:out value="${producto.nombre}" /></td>
+                                    <td>
+                                        <a href="ControladorProductos?accion=leerProducto&idProducto=${producto.id}" class="btn btn-outline-success">Leer</a> &nbsp;
+                                        <a href="#" class="btn btn-outline-warning">Modificar</a> &nbsp;
+                                        <a href="#" class="btn btn-outline-danger">Eliminar</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="alert alert-primary" role="alert">
+                                        No hay productos registrados aún.
+                                    </div>
+                                </td> 
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
+                </tbody>
+            </table>
         </div>
     </body>
 </html>
