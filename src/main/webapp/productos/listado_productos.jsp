@@ -37,8 +37,8 @@
                                     <td><c:out value="${producto.nombre}" /></td>
                                     <td>
                                         <a href="ControladorProductos?accion=leerProducto&idProducto=${producto.id}" class="btn btn-outline-success">Leer</a> &nbsp;
-                                        <a href="#" class="btn btn-outline-warning">Modificar</a> &nbsp;
-                                        <a href="#" class="btn btn-outline-danger">Eliminar</a>
+                                        <a href="ControladorProductos?accion=actualizarProducto&idProducto=${producto.id}" class="btn btn-outline-warning">Modificar</a> &nbsp;
+                                        <a href="ControladorProductos?accion=eliminarProducto&idProducto=${producto.id}" class="btn btn-outline-danger" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
                                     </td>
                                 </tr>
                             </c:forEach>

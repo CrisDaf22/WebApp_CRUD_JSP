@@ -37,6 +37,7 @@
                             <label for="txt_idProducto" class="form-label">ID del producto</label>
                             <input type="number" class="form-control" id="txt_idProducto" value="${producto.id}" disabled name="txt_idProducto">
                         </div>
+                        <input type="hidden" name="txt_idProducto" value="${producto.id}">
                     </c:otherwise>
                 </c:choose>
 
@@ -60,10 +61,10 @@
                     <input type="file" class="form-control" id="txt_imagenProducto" accept='image/png, image/jpg, image/jpeg' name="txt_imagenProducto">
                 </div>
 
-                <c:if test="${producto.imagen != null}">
+                <c:if test="${imgProducto != null}">
                     <div class="mb-3">
                         <label for="txt_imgProducto" class="form-label">Imágen actual</label>
-                        <img src="data:image/jpeg;base64,${java.util.Base64.getEncoder().encodeToString(producto.imagen)}" id="txt_imgProducto"/>
+                        <img src="data:image/jpeg;base64,${imgProducto}" id="txt_imgProducto" width="125" height="125"/>
                     </div>
                 </c:if>
                 

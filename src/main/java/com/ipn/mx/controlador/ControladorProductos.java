@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +49,10 @@ public class ControladorProductos extends HttpServlet {
             almacenarProducto(request, response);
         } else if (accion.equals("leerProducto")) {
             leerProducto(request, response);
+        } else if (accion.equals("actualizarProducto")) {
+            actualizarProducto(request, response);
+        } else if (accion.equals("eliminarProducto")) {
+            eliminarProducto(request, response);
         }
     }
     
@@ -82,19 +87,42 @@ public class ControladorProductos extends HttpServlet {
         int cantidad = Integer.parseInt(request.getParameter("txt_cantidadProducto"));
         
         Part parteArchivo = request.getPart("txt_imagenProducto");
-        InputStream is = parteArchivo.getInputStream();
         
-        byte[] imagen = getBytes(is);
-        
-        ProductoDAO dao = new ProductoDAO();
-        Producto p = new Producto();
         if(id == 0) {
+            ProductoDAO dao = ProductoDAO.getInstance();
+            Producto p = new Producto();
+            InputStream is = parteArchivo.getInputStream();
+            byte[] imagen = getBytes(is);
+            
             p.setNombre(nombre);
             p.setDescripcion(descripcion);
             p.setCantidad(cantidad);
             p.setImagen(imagen);
             
             dao.insertarProducto(p);
+            
+            listarProductos(request, response);
+        } else {
+            ProductoDAO dao = ProductoDAO.getInstance();
+            Producto p = new Producto();
+            p.setId(id);
+            p.setNombre(nombre);
+            p.setDescripcion(descripcion);
+            p.setCantidad(cantidad);
+            
+            if (parteArchivo.getSize() > 0) {
+                InputStream is = parteArchivo.getInputStream();
+                byte[] imagen = getBytes(is);
+                
+                p.setImagen(imagen);
+            } else {
+                Producto temp = null;
+                temp = dao.leerProducto(p);
+                
+                p.setImagen(temp.getImagen());
+            }
+            
+            dao.actualizarProducto(p);
             
             listarProductos(request, response);
         }
@@ -135,6 +163,41 @@ public class ControladorProductos extends HttpServlet {
         }
     }
     
+    private void actualizarProducto(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idProducto"));
+        
+        ProductoDAO dao = ProductoDAO.getInstance();
+        Producto p = new Producto();
+        Producto pLeido = null;
+        p.setId(id);
+        
+        pLeido = dao.leerProducto(p);
+        
+        try {
+            request.setAttribute("producto", pLeido);
+            
+            String base64 = java.util.Base64.getEncoder().encodeToString(pLeido.getImagen());
+            request.setAttribute("imgProducto", base64);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("/productos/crear_producto.jsp");
+            rd.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(ControladorProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void eliminarProducto(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idProducto"));
+        
+        ProductoDAO dao = ProductoDAO.getInstance();
+        Producto p = new Producto();
+        p.setId(id);
+        
+        dao.eliminarProducto(p);
+        
+        listarProductos(request, response);
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -173,7 +236,4 @@ public class ControladorProductos extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    
-
 }
